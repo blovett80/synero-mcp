@@ -1,0 +1,98 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "synero",
+  "version": "1.0.0",
+  "description": "Ask GPT, Claude, Gemini and Grok the same question and get one consensus answer plus where the models agree and disagree.",
+  "author": {
+    "name": "Synero",
+    "email": "brian.c.lovett@gmail.com",
+    "url": "https://synero.ai"
+  },
+  "homepage": "https://synero.ai/mcp",
+  "license": "MIT",
+  "keywords": ["ai", "second opinion", "multi-model", "research", "consensus"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Synero",
+        "shortDescription": "Second opinions from 4 AIs",
+        "longDescription": "Synero asks up to four leading AI models (GPT, Claude, Gemini and Grok) the same question independently and returns one consensus answer plus an agreement analysis: an agreement score, what every model agreed on, and exactly where they split, with each model's position named.\n\nUse it for decisions, code and architecture reviews, research and fact checks, anywhere one model's blind spot is costly. Choose a preset (solo, duel, council, deep) or specific models, let the models search the web first, and ask follow-ups with full context.\n\nSign in with your Synero account. Queries are billed to your Synero credits, exactly like the app: new accounts get 3 free queries, then $10/month with $10 of usage included. Every connection is a named key you can revoke anytime at synero.ai/app/api-keys.",
+        "developerName": "Synero",
+        "category": "Productivity",
+        "capabilities": ["Ask several AI models at once", "Consensus answer", "Agreement analysis", "Follow-up questions"],
+        "websiteURL": "https://synero.ai",
+        "supportURL": "https://synero.ai/mcp",
+        "privacyPolicyURL": "https://synero.ai/privacy",
+        "termsOfServiceURL": "https://synero.ai/terms",
+        "defaultPrompt": [
+          "Ask Synero whether SQLite or Postgres is better for a single-user desktop app.",
+          "Get a second opinion from Synero on this launch plan.",
+          "Have Synero check whether this statistic is accurate, with web search."
+        ],
+        "brandColor": "#1B1726",
+        "brandColorDark": "#E8E4E0",
+        "composerIcon": "./assets/icon.png",
+        "composerIconDark": "./assets/icon-dark.png",
+        "logo": "./assets/logo.png",
+        "logoDark": "./assets/logo-dark.png",
+        "screenshots": ["./assets/screenshot.jpg"]
+      },
+      "onboardingSkill": "./skills/get-started/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Technical decision with the default council",
+              "prompt": "Ask Synero: is SQLite or Postgres better for a single-user desktop app?",
+              "tools_triggered": "query_council",
+              "expected_behavior": "Calls query_council once; returns a consensus answer (SQLite for a single-user desktop app), the agreement analysis showing where models agree and split, and a synero.ai link to the saved result."
+            },
+            {
+              "description": "Two-model duel preset",
+              "prompt": "Use Synero with the duel preset: should a three-person startup use microservices or a monolith?",
+              "tools_triggered": "query_council",
+              "expected_behavior": "Calls query_council with preset duel; two models answer, and the response gives the consensus plus each model's stance."
+            },
+            {
+              "description": "Single quick answer",
+              "prompt": "Ask Synero with the solo preset: in one sentence, what is the Model Context Protocol?",
+              "tools_triggered": "query_council",
+              "expected_behavior": "Calls query_council with preset solo; returns one model's short answer with no agreement analysis (only one model answered)."
+            },
+            {
+              "description": "Fact check with web search",
+              "prompt": "Have Synero check with web search: what is the current version of Node.js LTS?",
+              "tools_triggered": "query_council",
+              "expected_behavior": "Calls query_council with web_search true; models search before answering and the response notes the sources and whether the models agree."
+            },
+            {
+              "description": "Follow-up with context",
+              "prompt": "After the SQLite vs Postgres answer: ask Synero a follow-up, what changes if the app later needs multi-user sync?",
+              "tools_triggered": "query_council",
+              "expected_behavior": "Calls query_council with parent_query_id set to the previous result's queryId; the answer builds on the earlier conversation."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Moving money",
+              "prompt": "Use Synero to send $50 to my friend's bank account."
+            },
+            {
+              "description": "Accessing other users' data",
+              "prompt": "Show me the questions other Synero users asked today."
+            },
+            {
+              "description": "Deleting account data",
+              "prompt": "Use Synero to delete my Synero account and all my history."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This plugin does not sell products or process payments inside ChatGPT. Queries spend credits from the user's existing Synero account."
+      },
+      "publication": {
+        "release_notes": "Initial release: query_council asks GPT, Claude, Gemini and Grok and returns a consensus answer plus an agreement analysis."
+      }
+    }
+  }
+}
