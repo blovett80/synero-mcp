@@ -11,6 +11,7 @@ Use the `query_council` tool when the user wants a second opinion, a cross-check
 - Leave `preset` unset for the balanced four-model council. Use `solo` for one quick answer, `duel` for two models, `deep` for the strongest (slower) models.
 - Set `web_search: true` for recent events or facts that may have changed.
 - To follow up on a previous answer, pass its `queryId` as `parent_query_id`.
+- A long run (`deep`, web search) may come back with `status: "running"` and a `job_id` after about two minutes. Call `get_council_result` with that `job_id` until the answer arrives. Never call `query_council` again for it: that starts and bills a second run.
 
 Present the consensus answer first, then summarize where the models agreed and where they split, naming which model took which position. Link the result `url` so the user can open the full comparison on synero.ai.
 

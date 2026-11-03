@@ -35,6 +35,10 @@ Full setup guide: [synero.ai/mcp](https://synero.ai/mcp). A local stdio proxy is
 
 Results carry a consensus answer, the agreement analysis, and a link to the saved comparison on synero.ai.
 
+## Tool: `get_council_result`
+
+A run still going after about two minutes (deep models, web search) returns `status: "running"` and a `job_id`, and keeps running on Synero's servers. Pass that `job_id` to `get_council_result` to collect the answer; each call waits up to a minute. It is free and never starts a second run.
+
 ## Pricing
 
 Billed to your Synero credits like the app: 3 free queries for new accounts, then $10/month with $10 of usage included. [synero.ai/pricing](https://synero.ai/pricing)
